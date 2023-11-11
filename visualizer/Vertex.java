@@ -9,12 +9,14 @@ public class Vertex extends JPanel {
     protected static final int WIDTH = 50;
     protected static final int HEIGHT = 50;
     protected static final Color VERTEX_COLOR = Color.white;
-    private static final Map<Integer, Vertex> vertices = new HashMap<>();
-    private int id;
+    //protected static final Map<String, Vertex> vertices = new HashMap<>();
+    private String id;
     private JLabel label;
+
+    /*
     public Vertex(int x, int y) {
 
-        this.id = vertices.size();
+        this.id = String.valueOf(vertices.size());
         vertices.put(this.id, this);
         this.label = new JLabel("VertexLabel " + this.id);
         this.setLabel();
@@ -23,8 +25,22 @@ public class Vertex extends JPanel {
         this.setBackground(MainFrame.BACKGROUND_COLOR);
         this.setLayout(null);
         this.setBounds(x, y, Vertex.WIDTH, Vertex.HEIGHT);
-        this.setVisible(true);
 
+    }
+
+     */
+
+    public Vertex(int x, int y, String id) {
+        this.id = id;
+        //vertices.put(this.id, this);
+        this.label = new JLabel();
+        this.label.setName("VertexLabel " + this.id);
+        this.setLabel();
+
+        this.setName("Vertex " + this.id);
+        this.setBackground(MainFrame.BACKGROUND_COLOR);
+        this.setLayout(null);
+        this.setBounds(x, y, Vertex.WIDTH, Vertex.HEIGHT);
     }
 
 
@@ -39,7 +55,7 @@ public class Vertex extends JPanel {
         this.label.setText(String.valueOf(this.id));
         this.label.setVerticalAlignment(JLabel.CENTER);
         this.label.setHorizontalAlignment(JLabel.CENTER);
-        this.label.setBounds(0, 0, Vertex.WIDTH, Vertex.HEIGHT);
+        this.label.setSize(Vertex.WIDTH, Vertex.HEIGHT);
         this.add(this.label);
     }
 
