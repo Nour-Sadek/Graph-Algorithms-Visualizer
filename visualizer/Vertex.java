@@ -9,9 +9,11 @@ public class Vertex extends JPanel {
     protected static final int WIDTH = 50;
     protected static final int HEIGHT = 50;
     protected static final Color VERTEX_COLOR = Color.white;
-    //protected static final Map<String, Vertex> vertices = new HashMap<>();
+    protected static final Map<String, Vertex> vertices = new HashMap<>();
     private String id;
     private JLabel label;
+    private int xLocation;
+    private int yLocation;
 
     /*
     public Vertex(int x, int y) {
@@ -32,17 +34,31 @@ public class Vertex extends JPanel {
 
     public Vertex(int x, int y, String id) {
         this.id = id;
-        //vertices.put(this.id, this);
+        this.xLocation = x;
+        this.yLocation = y;
+        vertices.put(this.id, this);
         this.label = new JLabel();
         this.label.setName("VertexLabel " + this.id);
         this.setLabel();
 
         this.setName("Vertex " + this.id);
         this.setBackground(MainFrame.BACKGROUND_COLOR);
+        this.setOpaque(false);
         this.setLayout(null);
         this.setBounds(x, y, Vertex.WIDTH, Vertex.HEIGHT);
     }
 
+    public int getXLocation() {
+        return this.xLocation;
+    }
+
+    public int getYLocation() {
+        return this.yLocation;
+    }
+
+    public String getId() {
+        return this.id;
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
