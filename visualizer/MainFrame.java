@@ -122,10 +122,11 @@ public class MainFrame extends JFrame {
                     } else {
                         if (input.matches("(-?[1-9]|0)")) {
                             Edge edge1 = new Edge(vertex1, vertex2, Integer.valueOf(input));
-                            Edge edge2 = new Edge(vertex1, vertex2);
+                            Edge edge2 = new Edge(vertex2, vertex1);
 
                             graphPanel.add(edge1);
                             graphPanel.add(edge2);
+                            graphPanel.add(edge1.getLabel());
 
                             Edge.edges.add(edge1);
                             Edge.edges.add(edge2);
