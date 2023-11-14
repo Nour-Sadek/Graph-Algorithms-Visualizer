@@ -17,10 +17,6 @@ public class MainFrame extends JFrame {
     protected static List<Vertex> edgeVertices = new ArrayList<>();
     protected static List<List<String>> availableEdges = new ArrayList<>();
 
-    enum Mode {
-        ADD_A_VERTEX, ADD_AN_EDGE, NONE
-    }
-
     public MainFrame() {
         super("Graph-Algorithms Visualizer");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -59,8 +55,8 @@ public class MainFrame extends JFrame {
                             } else {
                                 input = input.trim();
                                 if (input.length() == 1 && validVertexID(input)) {
-                                    int xValue = e.getX() - Vertex.WIDTH / 2;
-                                    int yValue = e.getY() - Vertex.HEIGHT / 2;
+                                    int xValue = e.getX() - Vertex.SIZE / 2;
+                                    int yValue = e.getY() - Vertex.SIZE / 2;
                                     createVertex(graphPanel, xValue, yValue, input);
                                     return;
                                 }
@@ -125,18 +121,20 @@ public class MainFrame extends JFrame {
                         break;
                     } else {
                         if (input.matches("(-?[1-9]|0)")) {
-                            Graphics g = graphPanel.getGraphics();
-                            g.setColor(Vertex.VERTEX_COLOR);
-                            g.setFont(new Font(null, Font.BOLD, 11));
-                            g.drawLine(vertex1.getXLocation() + Vertex.WIDTH / 2,
-                                    vertex1.getYLocation() + Vertex.HEIGHT / 2,
-                                    vertex2.getXLocation() + Vertex.WIDTH / 2,
-                                    vertex2.getYLocation() + Vertex.HEIGHT / 2);
-                            int xMid = (vertex1.getXLocation() + Vertex.WIDTH / 2 + vertex2.getXLocation() + Vertex.WIDTH / 2) / 2;
-                            int yMid = (vertex1.getYLocation() + Vertex.HEIGHT / 2 + vertex2.getYLocation() + Vertex.HEIGHT / 2) / 2;
-                            g.drawString(input, xMid + 10, yMid + 10);
-                            vertex1.repaint();
-                            vertex2.repaint();
+                            Edge edge1 = new Edge(vertex1, vertex2, Integer.valueOf(input));
+                            Edge edge2 = new Edge(vertex1, vertex2);
+
+                            graphPanel.add(edge1);
+                            graphPanel.add(edge2);
+
+                            Edge.edges.add(edge1);
+                            Edge.edges.add(edge2);
+                            vertex1.getEdges().add(edge1);
+                            vertex1.getEdges().add(edge2);
+                            vertex2.getEdges().add(edge1);
+                            vertex2.getEdges().add(edge2);
+
+                            graphPanel.repaint();
                             return;
                         }
                     }
@@ -170,24 +168,24 @@ public class MainFrame extends JFrame {
 
         // Add event listeners to the three menu items
         addAVertex.addActionListener(e -> {
-            // Change text for label
-            changeTextForModeLabel("Current Mode -> Add a Vertex");
             // Change the mode
             mode = Mode.ADD_A_VERTEX;
+            // Change text for label
+            changeTextForModeLabel("Current Mode -> " + mode.getDescription());
             // Remove response to previous vertex clicks
             edgeVertices.clear();
         });
         addAnEdge.addActionListener(e -> {
-            // Change text for label
-            changeTextForModeLabel("Current Mode -> Add an Edge");
             // Change the mode
             mode = Mode.ADD_AN_EDGE;
+            // Change text for label
+            changeTextForModeLabel("Current Mode -> " + mode.getDescription());
         });
         none.addActionListener(e -> {
-            // Change text for label
-            changeTextForModeLabel("Current Mode -> None");
             // Change the mode
             mode = Mode.NONE;
+            // Change text for label
+            changeTextForModeLabel("Current Mode -> " + mode.getDescription());
             // Remove response to previous vertex clicks
             edgeVertices.clear();
         });
@@ -221,8 +219,8 @@ public class MainFrame extends JFrame {
             int xLocation = vertex.getXLocation();
             int yLocation = vertex.getYLocation();
 
-            if (x >= xLocation && x <= xLocation + Vertex.WIDTH
-                    && y >= yLocation && y <= yLocation + Vertex.HEIGHT) {
+            if (x >= xLocation && x <= xLocation + Vertex.SIZE
+                    && y >= yLocation && y <= yLocation + Vertex.SIZE) {
                 return vertex;
             }
         }
@@ -236,8 +234,8 @@ public class MainFrame extends JFrame {
             int xLocation = vertex.getXLocation();
             int yLocation = vertex.getYLocation();
 
-            if (x >= xLocation - Vertex.WIDTH / 2 && x <= xLocation + Vertex.WIDTH + Vertex.WIDTH / 2
-                    && y >= yLocation - Vertex.WIDTH / 2 && y <= yLocation + Vertex.HEIGHT + Vertex.HEIGHT / 2) {
+            if (x >= xLocation - Vertex.SIZE / 2 && x <= xLocation + Vertex.SIZE + Vertex.SIZE / 2
+                    && y >= yLocation - Vertex.SIZE / 2 && y <= yLocation + Vertex.SIZE + Vertex.SIZE / 2) {
                 return false;
             }
         }
