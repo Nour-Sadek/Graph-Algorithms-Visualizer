@@ -1,10 +1,14 @@
 package visualizer;
 
 import javax.swing.*;
+import javax.swing.Timer;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
+import algorithms.*;
 
 public class Graph extends JPanel implements MouseListener {
 
@@ -144,6 +148,35 @@ public class Graph extends JPanel implements MouseListener {
 
                     this.repaint();
                 }
+        } else if (MainFrame.mode == Mode.NONE && MainFrame.getAlgorithmDisplayLabel().isVisible()) {
+            // Check if a vertex was clicked
+            Vertex vertex = clickedOnVertex(e.getX(), e.getY());
+
+            if (vertex != null) {
+                AlgorithmSetter algorithmSetter = new AlgorithmSetter();
+                algorithmSetter.setAlgorithm(MainFrame.algorithm.getAlgorithmInstance());
+
+                // Create the graph data structure
+                Map<Vertex, List<Edge>> graph = createGraphDataStructure();
+
+                // Run the algorithm
+                String path = algorithmSetter.execute(graph, vertex);
+
+                // Display the message that the Algorithm is running
+                MainFrame.getAlgorithmDisplayLabel().setText("Please wait...");
+
+                // Timer (with the interval of 1 sec)
+                Timer timer = new Timer(1000, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent arg0) {
+                        // Change display label to <path>
+                        MainFrame.getAlgorithmDisplayLabel().setText(path);
+                    }
+                });
+                timer.setRepeats(false);
+                timer.start();
+
+            }
         }
     }
 
@@ -238,9 +271,9 @@ public class Graph extends JPanel implements MouseListener {
             if (input == null) {
                 break;
             } else {
-                if (input.matches("(-?[1-9]|0)")) {
+                if (input.matches("(-?[1-9]\\d*|0)")) {
                     Edge edge1 = new Edge(vertex1, vertex2, Integer.valueOf(input));
-                    Edge edge2 = new Edge(vertex2, vertex1);
+                    Edge edge2 = new Edge(vertex2, vertex1, Integer.valueOf(input));
 
                     this.add(edge1);
                     this.add(edge2);
@@ -266,6 +299,22 @@ public class Graph extends JPanel implements MouseListener {
         }
 
         availableEdges = newEdgesList;
+    }
+
+    private static Map<Vertex, List<Edge>> createGraphDataStructure() {
+        Map<Vertex, List<Edge>> output = new HashMap<>();
+
+        // Place all available vertices as keys with values as empty lists
+        for (Vertex vertex: Vertex.vertices.values()) {
+            output.put(vertex, new ArrayList<>());
+        }
+
+        // Populate the lists of each Vertex with edges that have them as source Vertex
+        for (Edge edge: Edge.edges) {
+            output.get(edge.getVertex1()).add(edge);
+        }
+
+        return output;
     }
 
 }

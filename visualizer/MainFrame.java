@@ -8,21 +8,35 @@ public class MainFrame extends JFrame {
     protected static final int HEIGHT = 600;
     protected static final Color BACKGROUND_COLOR = Color.black;
     private JLabel modeLabel;
+    private static final JLabel algorithmDisplayLabel;
     private Graph graphPanel;
     protected static Mode mode = Mode.ADD_A_VERTEX;
+    protected static Algorithm algorithm = null;
+
+    static {
+        algorithmDisplayLabel = new JLabel();
+        algorithmDisplayLabel.setText("Please choose a starting vertex");
+        algorithmDisplayLabel.setForeground(MainFrame.BACKGROUND_COLOR);
+        algorithmDisplayLabel.setBackground(Color.white);
+        algorithmDisplayLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        algorithmDisplayLabel.setVerticalAlignment(SwingConstants.CENTER);
+        algorithmDisplayLabel.setLayout(new FlowLayout(FlowLayout.TRAILING));
+        algorithmDisplayLabel.setVisible(false);
+    }
 
 
     public MainFrame() {
         super("Graph-Algorithms Visualizer");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(MainFrame.WIDTH, MainFrame.HEIGHT);
-        setLayout(null);
+        setLayout(new BorderLayout());
         setResizable(false);
 
         setModeJLabel();
+        this.add(algorithmDisplayLabel, BorderLayout.SOUTH);
         setJMenu();
 
-        add(this.graphPanel = new Graph());
+        add(this.graphPanel = new Graph(), BorderLayout.CENTER);
 
         setVisible(true);
 
@@ -40,6 +54,10 @@ public class MainFrame extends JFrame {
         // Creating the menu "Mode"
         JMenu modeMenu = new JMenu("Mode");
         menuBar.add(modeMenu);
+
+        // Creating the menu "Algorithms"
+        JMenu algorithmsMenu = new JMenu("Algorithms");
+        menuBar.add(algorithmsMenu);
 
         // Creating the five menu items for "Mode"
         JMenuItem addAVertex = new JMenuItem("Add a Vertex");
@@ -68,6 +86,15 @@ public class MainFrame extends JFrame {
         fileMenu.add(newReset);
         fileMenu.add(exit);
 
+        // Creating the two menu items for "Algorithms"
+        JMenuItem DFS = new JMenuItem("Depth-First Search");
+        DFS.setName("DFS");
+        JMenuItem BFS = new JMenuItem("Breadth-First Search");
+        BFS.setName("BFS");
+
+        algorithmsMenu.add(DFS);
+        algorithmsMenu.add(BFS);
+
 
         // Add event listeners to the five menu items of "Mode"
         addAVertex.addActionListener(e -> {
@@ -77,12 +104,18 @@ public class MainFrame extends JFrame {
             changeTextForModeLabel("Current Mode -> " + mode.getDescription());
             // Remove response to previous vertex clicks
             Graph.edgeVertices.clear();
+            // Switch algorithmDisplayLabel visibility to false and text
+            algorithmDisplayLabel.setVisible(false);
+            algorithmDisplayLabel.setText("Please choose a starting vertex");
         });
         addAnEdge.addActionListener(e -> {
             // Change the mode
             mode = Mode.ADD_AN_EDGE;
             // Change text for label
             changeTextForModeLabel("Current Mode -> " + mode.getDescription());
+            // Switch algorithmDisplayLabel visibility to false and text
+            algorithmDisplayLabel.setVisible(false);
+            algorithmDisplayLabel.setText("Please choose a starting vertex");
         });
         none.addActionListener(e -> {
             // Change the mode
@@ -91,6 +124,9 @@ public class MainFrame extends JFrame {
             changeTextForModeLabel("Current Mode -> " + mode.getDescription());
             // Remove response to previous vertex clicks
             Graph.edgeVertices.clear();
+            // Switch algorithmDisplayLabel visibility to false and text
+            algorithmDisplayLabel.setVisible(false);
+            algorithmDisplayLabel.setText("Please choose a starting vertex");
         });
         removeAVertex.addActionListener(e -> {
             // Change the mode
@@ -99,6 +135,9 @@ public class MainFrame extends JFrame {
             changeTextForModeLabel("Current Mode -> " + mode.getDescription());
             // Remove response to previous vertex clicks
             Graph.edgeVertices.clear();
+            // Switch algorithmDisplayLabel visibility to false and text
+            algorithmDisplayLabel.setVisible(false);
+            algorithmDisplayLabel.setText("Please choose a starting vertex");
         });
         removeAnEdge.addActionListener(e -> {
             // Change the mode
@@ -107,12 +146,16 @@ public class MainFrame extends JFrame {
             changeTextForModeLabel("Current Mode -> " + mode.getDescription());
             // Remove response to previous vertex clicks
             Graph.edgeVertices.clear();
+            // Switch algorithmDisplayLabel visibility to false and text
+            algorithmDisplayLabel.setVisible(false);
+            algorithmDisplayLabel.setText("Please choose a starting vertex");
         });
 
         // Add event listeners to the two menu items of "File"
         newReset.addActionListener(e -> {
             this.remove(this.graphPanel);
             this.repaint();
+            this.revalidate();
             this.add(this.graphPanel = new Graph());
 
             // Clear all the static containers
@@ -125,9 +168,29 @@ public class MainFrame extends JFrame {
             mode = Mode.ADD_A_VERTEX;
             // Change text for label
             changeTextForModeLabel("Current Mode -> " + mode.getDescription());
+            // Switch algorithmDisplayLabel visibility to false and text
+            algorithmDisplayLabel.setVisible(false);
+            algorithmDisplayLabel.setText("Please choose a starting vertex");
+
         });
         exit.addActionListener(e -> {
             this.dispose();
+        });
+
+        // Add event listeners to the two menu items of "Algorithms"
+        DFS.addActionListener(e -> {
+            none.doClick();
+            // Switch algorithmDisplayLabel visibility to true
+            algorithmDisplayLabel.setVisible(true);
+            // Change the algorithm
+            algorithm = Algorithm.DFS;
+        });
+        BFS.addActionListener(e -> {
+            none.doClick();
+            // Switch algorithmDisplayLabel visibility to true
+            algorithmDisplayLabel.setVisible(true);
+            // Change the algorithm
+            algorithm = Algorithm.BFS;
         });
     }
 
@@ -138,17 +201,20 @@ public class MainFrame extends JFrame {
     }
 
     private void setModeJLabel() {
-
         modeLabel = new JLabel();
-        this.add(modeLabel);
+        this.add(modeLabel, BorderLayout.NORTH);
         modeLabel.setName("Mode");
         modeLabel.setText("Current Mode -> Add a Vertex");
         modeLabel.setOpaque(true);
         modeLabel.setForeground(Vertex.VERTEX_COLOR);
         modeLabel.setBackground(MainFrame.BACKGROUND_COLOR);
-        modeLabel.setSize(modeLabel.getPreferredSize());
-        modeLabel.setLocation(MainFrame.WIDTH - modeLabel.getWidth() - 20, 0);
+        modeLabel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        modeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
+    }
+
+    public static JLabel getAlgorithmDisplayLabel() {
+        return algorithmDisplayLabel;
     }
 
 }

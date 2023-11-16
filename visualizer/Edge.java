@@ -5,7 +5,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public class Edge extends JComponent {
+public class Edge extends JComponent implements Comparable<Edge> {
     private Vertex vertex1;
     private Vertex vertex2;
     private int weight;
@@ -27,6 +27,7 @@ public class Edge extends JComponent {
         edges.add(this);
     }
 
+    /*
     public Edge(Vertex vertex1, Vertex vertex2) {
         this.setName("Edge <" + vertex1.getId() + " -> " + vertex2.getId() + ">");
         this.setBackground(MainFrame.BACKGROUND_COLOR);
@@ -37,6 +38,8 @@ public class Edge extends JComponent {
 
         edges.add(this);
     }
+
+     */
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -78,6 +81,10 @@ public class Edge extends JComponent {
         return this.label;
     }
 
+    public int getWeight() {
+        return this.weight;
+    }
+
     public Vertex getVertex1() {
         return this.vertex1;
     }
@@ -93,6 +100,11 @@ public class Edge extends JComponent {
     public boolean equals(Edge other) {
         return (this.vertex1.equals(other.vertex1) || this.vertex1.equals(other.vertex2))
                 && (this.vertex2.equals(other.vertex1) || this.vertex2.equals(other.vertex2));
+    }
+
+    @Override
+    public int compareTo(Edge otherEdge) {
+        return Integer.valueOf(this.weight).compareTo(otherEdge.getWeight());
     }
 
 }
