@@ -3,7 +3,6 @@ package visualizer;
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 public class Vertex extends JPanel {
 
@@ -14,7 +13,6 @@ public class Vertex extends JPanel {
     private JLabel label;
     private int xLocation;
     private int yLocation;
-    private List<Edge> edges = new ArrayList<>();
 
     public Vertex(int x, int y, String id) {
         this.id = id;
@@ -43,7 +41,6 @@ public class Vertex extends JPanel {
     public String getId() {
         return this.id;
     }
-    public List<Edge> getEdges() { return this.edges; }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -58,6 +55,10 @@ public class Vertex extends JPanel {
         this.label.setHorizontalAlignment(JLabel.CENTER);
         this.label.setSize(Vertex.SIZE, Vertex.SIZE);
         this.add(this.label);
+    }
+
+    public boolean equals(Vertex other) {
+        return this.id.equals(other.getId());
     }
 
 

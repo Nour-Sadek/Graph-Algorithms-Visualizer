@@ -78,4 +78,21 @@ public class Edge extends JComponent {
         return this.label;
     }
 
+    public Vertex getVertex1() {
+        return this.vertex1;
+    }
+
+    public Vertex getVertex2() {
+        return this.vertex2;
+    }
+
+    public boolean getTopEqualsLeft() {
+        return this.topEqualsLeft;
+    }
+
+    public boolean equals(Edge other) {
+        return (this.vertex1.equals(other.vertex1) || this.vertex1.equals(other.vertex2))
+                && (this.vertex2.equals(other.vertex1) || this.vertex2.equals(other.vertex2));
+    }
+
 }
