@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 
-public class Vertex extends JPanel {
+public class Vertex extends JPanel implements Comparable<Vertex> {
 
     protected static final int SIZE = 50;
     protected static final Color VERTEX_COLOR = Color.white;
@@ -61,6 +61,9 @@ public class Vertex extends JPanel {
         return this.id.equals(other.getId());
     }
 
-
+    @Override
+    public int compareTo(Vertex otherVertex) {
+        return String.valueOf(this.id).compareTo(otherVertex.getId());
+    }
 }
 

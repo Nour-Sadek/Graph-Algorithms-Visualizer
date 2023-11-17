@@ -15,6 +15,7 @@ public class MainFrame extends JFrame {
 
     static {
         algorithmDisplayLabel = new JLabel();
+        algorithmDisplayLabel.setName("Display");
         algorithmDisplayLabel.setText("Please choose a starting vertex");
         algorithmDisplayLabel.setForeground(MainFrame.BACKGROUND_COLOR);
         algorithmDisplayLabel.setBackground(Color.white);
@@ -86,15 +87,17 @@ public class MainFrame extends JFrame {
         fileMenu.add(newReset);
         fileMenu.add(exit);
 
-        // Creating the two menu items for "Algorithms"
+        // Creating the three menu items for "Algorithms"
         JMenuItem DFS = new JMenuItem("Depth-First Search");
-        DFS.setName("DFS");
+        DFS.setName("Depth-First Search");
         JMenuItem BFS = new JMenuItem("Breadth-First Search");
-        BFS.setName("BFS");
+        BFS.setName("Breadth-First Search");
+        JMenuItem Dijkstras = new JMenuItem("Dijkstra's Algorithm");
+        Dijkstras.setName("Dijkstra's Algorithm");
 
         algorithmsMenu.add(DFS);
         algorithmsMenu.add(BFS);
-
+        algorithmsMenu.add(Dijkstras);
 
         // Add event listeners to the five menu items of "Mode"
         addAVertex.addActionListener(e -> {
@@ -177,7 +180,7 @@ public class MainFrame extends JFrame {
             this.dispose();
         });
 
-        // Add event listeners to the two menu items of "Algorithms"
+        // Add event listeners to the three menu items of "Algorithms"
         DFS.addActionListener(e -> {
             none.doClick();
             // Switch algorithmDisplayLabel visibility to true
@@ -191,6 +194,13 @@ public class MainFrame extends JFrame {
             algorithmDisplayLabel.setVisible(true);
             // Change the algorithm
             algorithm = Algorithm.BFS;
+        });
+        Dijkstras.addActionListener(e -> {
+            none.doClick();
+            // Switch algorithmDisplayLabel visibility to true
+            algorithmDisplayLabel.setVisible(true);
+            // Change the algorithm
+            algorithm = Algorithm.DIJKSTRAS;
         });
     }
 

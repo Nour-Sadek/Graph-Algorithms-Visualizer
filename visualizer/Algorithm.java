@@ -4,7 +4,8 @@ import algorithms.*;
 public enum Algorithm {
 
     BFS(new BFSAlgorithm()),
-    DFS(new DFSAlgorithm());
+    DFS(new DFSAlgorithm()),
+    DIJKSTRAS(new DijkstrasAlgorithm());
 
     private final GraphAlgorithm algorithmInstance;
 
