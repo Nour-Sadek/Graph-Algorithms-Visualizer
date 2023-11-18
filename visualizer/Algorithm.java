@@ -5,7 +5,8 @@ public enum Algorithm {
 
     BFS(new BFSAlgorithm()),
     DFS(new DFSAlgorithm()),
-    DIJKSTRAS(new DijkstrasAlgorithm());
+    DIJKSTRAS(new DijkstrasAlgorithm()),
+    PRIMS(new PrimsAlgorithm());
 
     private final GraphAlgorithm algorithmInstance;
 
