@@ -57,6 +57,7 @@ public class Vertex extends JPanel implements Comparable<Vertex> {
         this.add(this.label);
     }
 
+    @Override
     public boolean equals(Object other) {
         if (this == other) return true;
         if (!(other instanceof Vertex)) return false;
@@ -68,8 +69,19 @@ public class Vertex extends JPanel implements Comparable<Vertex> {
     }
 
     @Override
+    public int hashCode() {
+        int result = 17;
+
+        result = 31 * result + (id == null ? 0 : id.hashCode());
+        result = 31 * result + xLocation;
+        result = 31 * result + yLocation;
+
+        return result;
+    }
+
+    @Override
     public int compareTo(Vertex otherVertex) {
         return String.valueOf(this.id).compareTo(otherVertex.getId());
     }
-}
 
+}
