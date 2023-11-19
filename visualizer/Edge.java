@@ -97,9 +97,13 @@ public class Edge extends JComponent implements Comparable<Edge> {
         return this.topEqualsLeft;
     }
 
-    public boolean equals(Edge other) {
-        return (this.vertex1.equals(other.vertex1) || this.vertex1.equals(other.vertex2))
-                && (this.vertex2.equals(other.vertex1) || this.vertex2.equals(other.vertex2));
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (!(other instanceof Edge)) return false;
+        Edge otherEdge = (Edge) other;
+
+        return (this.vertex1.equals(otherEdge.vertex1) || this.vertex1.equals(otherEdge.vertex2))
+                && (this.vertex2.equals(otherEdge.vertex1) || this.vertex2.equals(otherEdge.vertex2));
     }
 
     @Override

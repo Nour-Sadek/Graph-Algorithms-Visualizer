@@ -57,8 +57,14 @@ public class Vertex extends JPanel implements Comparable<Vertex> {
         this.add(this.label);
     }
 
-    public boolean equals(Vertex other) {
-        return this.id.equals(other.getId());
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (!(other instanceof Vertex)) return false;
+        Vertex otherVertex = (Vertex) other;
+
+        return Objects.equals(this.id, (otherVertex).getId()) &&
+                this.xLocation == otherVertex.getXLocation() &&
+                this.yLocation == otherVertex.getYLocation();
     }
 
     @Override
